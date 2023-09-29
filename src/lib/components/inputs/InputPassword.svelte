@@ -5,8 +5,8 @@
     export let placeholder = 'Enter your password';
     export let value = '';
     export let required = false;
-    export let pattern = '(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}';
-    export let instructions = 'Must contain one lowercase letter, one uppercase letter, one number and be made of at least 8 or more characters';
+    export let pattern = '.{8,}';
+    export let instructions = 'Password must be made of at least 8 or more characters';
 </script>
 
 <div>

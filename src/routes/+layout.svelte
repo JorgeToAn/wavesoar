@@ -7,7 +7,7 @@
 </svelte:head>
 
 <div class="w-full h-screen">
-    <main class="mb-48">
+    <main class="pb-48">
         <slot />
     </main>
     <footer class="fixed bottom-0 w-full">

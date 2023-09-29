@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum CollectionType {
+  ALBUM
+  SINGLE
+  PLAYLIST
+}
+
+model User {
+  id           String       @id @unique @default(uuid())
+  email        String       @unique
+  password     String
+  auth_token   String       @unique
+  username     String       @unique
+  first_name   String
+  last_name    String?
+  bio          String?
+  birthdate    DateTime
+  picture_path String       @default("/images/default_user.png")
+  created_at   DateTime     @default(now())
+  role         Role         @default(USER)
+  songs        Song[]
+  collections  Collection[]
+  followers    Follows[]    @relation("following")
+  following    Follows[]    @relation("follower")
+}
+
+model Follows {
+  follower_id    String
+  follower_user  User     @relation("follower", fields: [follower_id], references: [id])
+  following_id   String
+  following_user User     @relation("following", fields: [following_id], references: [id])
+  followed_at    DateTime @default(now())
+
+  @@id([following_id, follower_id])
+}
+
+model Genre {
+  id    Int    @id @default(autoincrement())
+  name  String
+  songs Song[]
+}
+
+model Song {
+  id            Int        @id @default(autoincrement())
+  name          String
+  /// Duration in seconds
+  duration      Int
+  file_url      String
+  genre_id      Int
+  genre         Genre?     @relation(fields: [genre_id], references: [id])
+  creator_id    String
+  creator       User       @relation(fields: [creator_id], references: [id])
+  collection_id Int
+  collection    Collection @relation(fields: [collection_id], references: [id])
+}
+
+model Collection {
+  id          Int            @id @default(autoincrement())
+  name        String
+  picture_url String         @default("/images/default_collection.png")
+  is_private  Boolean        @default(false)
+  type        CollectionType @default(PLAYLIST)
+  creator_id  String
+  creator     User           @relation(fields: [creator_id], references: [id])
+  songs       Song[]
+}

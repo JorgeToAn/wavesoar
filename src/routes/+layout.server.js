@@ -1,3 +1,6 @@
-export async function load({ locals }) {
-  return { user: locals.user };
+export async function load({ locals, url }) {
+  return {
+    user: locals.user,
+    url: url.pathname,
+  };
 }

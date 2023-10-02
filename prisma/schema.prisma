@@ -61,6 +61,7 @@ model Song {
   name          String
   /// Duration in seconds
   duration      Int
+  number        Int
   file_url      String
   genre_id      Int
   genre         Genre?     @relation(fields: [genre_id], references: [id])

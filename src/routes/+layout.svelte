@@ -7,9 +7,7 @@
 </svelte:head>
 
 <div class="w-full h-screen">
-    <main class="pb-48">
-        <slot />
-    </main>
+    <slot />
     <footer class="fixed bottom-0 w-full">
         <svg class="waves w-full mb-[-7px] min-h-[100px] max-h-52" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
             <defs>

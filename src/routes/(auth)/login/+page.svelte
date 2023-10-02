@@ -5,7 +5,6 @@
     export let form;
 </script>
 
-<a href="/login" class="font-title md:text-8xl text-4xl tracking-tight px-8 py-4">wavesoar</a>
 <div class="md:w-1/2 md:mx-auto mx-8 mt-10 mb-2 border-2 rounded-lg">
     <div class="py-2 px-4">
         <h2 class="text-3xl py-2 px-2">Start Surfing</h2>

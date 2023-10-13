@@ -1,15 +1,13 @@
 <script>
-    import { onMount } from 'svelte';
-    import { queue } from '$lib/stores.js';
+    import { queue, queueIndex } from '$lib/stores.js';
 
-    let paused = false;
-    let muted;
+    let paused = true;
+    let muted = false;
     let volume;
     let currentTimeDisplay = '00:00';
     let currentTime;
     let durationDisplay = '00:00';
     let duration;
-    let queueIndex = 0;
 
     let audioPlayer;
     let playBtn;
@@ -22,50 +20,46 @@
         seekSlider.value = 0;
     }
 
-    function loadSong() {
+    async function loadSong() {
         reset();
         if ($queue.length) {
-            audioPlayer.src = $queue[queueIndex].url;
-            audioPlayer.load();
+            audioPlayer.src = $queue[$queueIndex].file_url;
+            await audioPlayer.load();
         }
     }
 
     function playSong() {
         audioPlayer.play();
         paused = false;
-        console.log(audioPlayer.src);
-        playBtn.innerHTML = '<i class="bi bi-pause-fill"></i>';
     }
 
     function pauseSong() {
         audioPlayer.pause();
         paused = true;
-        playBtn.innerHTML = '<i class="bi bi-play-fill"></i>';
     }
 
     function togglePlay() {
         paused ? playSong() : pauseSong();
     }
 
-    function nextSong() {
-        queueIndex++;
-        if (queueIndex >= $queue.length) {
-            queueIndex = 0;
-            loadSong();
+    async function nextSong() {
+        if ($queueIndex + 1 >= $queue.length) {
+            $queueIndex = 0;
+            await loadSong();
             pauseSong()
         } else {
-            loadSong();
+            $queueIndex = $queueIndex + 1;
+            await loadSong();
             playSong();
         }
     }
 
-    function prevSong() {
-        queueIndex--;
-        if (queueIndex <= 0) {
-            queueIndex = 0;
+    async function prevSong() {
+        if ($queueIndex != 0) {
+            $queueIndex = $queueIndex - 1;
+            await loadSong();
+            playSong();
         }
-        loadSong();
-        playSong();
     }
 
     function mute() {
@@ -101,13 +95,21 @@
     // TODO
     // handleLike()
 
+    function handleSeek(event) {
+        let seekvalue = audioPlayer.duration * (event.target.value / 100);
+        audioPlayer.currentTime = seekvalue;
+        seekSlider.blur();
+    }
+
     // update song's current time and slider
     $: {
         if (!isNaN(currentTime)) {
-            let seekPosition = 0;
-            seekPosition = currentTime * (100 / duration);
-            seekSlider.value = seekPosition;
-
+            // avoid changing the slider while the user is interacting with it
+            if (document.activeElement !== seekSlider) {
+                let seekPosition = 0;
+                seekPosition = currentTime * (100 / duration);
+                seekSlider.value = seekPosition;
+            }
             let currentMinutes = Math.floor(currentTime / 60);
             let currentSeconds = Math.floor(currentTime - (currentMinutes * 60));
 
@@ -132,15 +134,11 @@
             durationDisplay = '00:00';
         }
     }
-
-    onMount(() => {
-        loadSong();
-    });
 </script>
 
 <div class="slider flex justify-center items-center">
     <span class="bg-white text-dark px-2 rounded-full select-none">{currentTimeDisplay}</span>
-    <input bind:this={seekSlider} type="range" value="0" class="w-7/12 h-2 mx-4 text-sm bg-primary-900 rounded-full appearance-none cursor-pointer transition ease-in hover:bg-primary-600">
+    <input bind:this={seekSlider} on:change={handleSeek} type="range" value="0" class="w-7/12 h-2 mx-4 text-sm bg-primary-900 rounded-full appearance-none cursor-pointer transition ease-in hover:bg-primary-600">
     <span class="bg-white text-dark px-2 rounded-full select-none">{durationDisplay}</span>
 </div>
 <div class="my-2 flex justify-evenly items-center translate-x-10">
@@ -149,7 +147,13 @@
     </div>
     <div class="flex justify-center items-center">
         <button on:click={prevSong} class="mx-2 bg-transparent text-white text-5xl rounded-full transition ease-in hover:bg-light hover:text-dark active:scale-90"><i class="bi bi-skip-start-fill"></i></button>
-        <button bind:this={playBtn} on:click={togglePlay} class="mx-2 bg-transparent text-white text-8xl rounded-full transition ease-in hover:bg-light hover:text-dark active:scale-90"><i class="bi bi-play-fill"></i></button>
+        <button bind:this={playBtn} on:click={togglePlay} class="mx-2 bg-transparent text-white text-8xl rounded-full transition ease-in hover:bg-light hover:text-dark active:scale-90">
+            {#if paused}
+                <i class="bi bi-play-fill"></i>
+            {:else}
+                <i class="bi bi-pause-fill"></i>
+            {/if}
+        </button>
         <button on:click={nextSong} class="mx-2 bg-transparent text-white text-5xl rounded-full transition ease-in hover:bg-light hover:text-dark active:scale-90"><i class="bi bi-skip-end-fill"></i></button>
     </div>
     <div class="pr-2 group flex items-center bg-transparent hover:bg-white rounded-full -translate-x-10">
@@ -159,7 +163,7 @@
 </div>
 <audio
     id="player"
-    src={$queue[queueIndex]?.url}
+    src={$queue[$queueIndex]?.file_url}
     bind:this={audioPlayer}
     bind:paused
     bind:muted

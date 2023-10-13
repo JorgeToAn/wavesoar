@@ -6,21 +6,21 @@
         {
             name: 'Blitz It!',
             artist: 'Chirpy Chips',
-            albumName: 'Splatoon 3 OST',
-            img: '/images/default_collection.jpg',
-            url: '/songs/Blitz It!.mp3',
+            album: 'Splatoon 3 OST',
+            picture_path: '/images/default_collection.jpg',
+            file_url: '/songs/Blitz It!.mp3',
         },
         {
             name: 'Specialist',
             artist: 'Shoji Meguro',
-            albumName: 'Persona 4 OST',
-            img: '/images/default_collection.jpg',
-            url: '/songs/Specialist.mp3',
+            album: 'Persona 4 OST',
+            picture_path: '/images/default_collection.jpg',
+            file_url: '/songs/Specialist.mp3',
         }
     ];
 </script>
 
 <h1 class="mx-4 mb-4 font-title text-6xl font-bold">My Liked Songs</h1>
-{#each songs as { name, artist, albumName, img, url }}
-    <SongCard {name} {artist} {albumName} {img} {url} />
+{#each songs as { name, artist, album, picture_path, file_url }}
+    <SongCard {name} {artist} {album} {picture_path} {file_url} />
 {/each}

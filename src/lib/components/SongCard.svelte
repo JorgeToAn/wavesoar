@@ -3,36 +3,33 @@
 
     export let name;
     export let artist;
-    export let img;
-    export let albumName;
-    export let url;
+    export let picture_path;
+    export let album;
+    export let file_url;
 
-    function playNow() {
-        let song = {
-            name,
-            artist,
-            img,
-            albumName,
-            url,
-        };
+    let song = {
+        name,
+        artist,
+        picture_path,
+        album,
+        file_url,
+    };
+
+    async function playNow() {
         $queue = [song];
+        let player = document.getElementById('player');
+        await player.load();
+        player.play();
     }
 
     function addToQueue() {
-        let song = {
-            name,
-            artist,
-            img,
-            albumName,
-            url,
-        };
         $queue = [...$queue, song];
     }
 </script>
 
 <div class="flex justify-items-start items-center transition ease-in bg-transparent hover:bg-primary-500 rounded my-2 p-2">
     <button on:click={playNow} class="relative group">
-        <img src={img} alt="Album Cover" class="w-16 h-16 rounded group-hover:brightness-50">
+        <img src={picture_path} alt="Album Cover" class="w-16 h-16 rounded group-hover:brightness-50">
         <i class="bi bi-play-fill invisible group-hover:visible absolute z-50 top-1/3 left-1/3 text-xl"></i>
     </button>
     <div class="px-4 w-5/12">
@@ -40,7 +37,7 @@
         <p>{artist}</p>
     </div>
     <div class="w-6/12">
-        <p>{albumName}</p>
+        <p>{album}</p>
     </div>
     <button on:click={addToQueue} class="bg-transparent hover:bg-primary-700 p-4 rounded">
         <i class="bi bi-music-note-list"></i>

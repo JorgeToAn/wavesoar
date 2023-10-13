@@ -1,8 +1,10 @@
 <script>
+    import { queue } from '$lib/stores.js';
     import { fly } from 'svelte/transition';
     import UserDropdown from '$lib/components/UserDropdown.svelte';
     import NavLink from '$lib/components/NavLink.svelte';
     import Player from '$lib/components/Player.svelte';
+	import SongPreview from '$lib/components/SongPreview.svelte';
 
     export let data;
     let navlinks = [
@@ -30,5 +32,8 @@
 </main>
 {/key}
 <div class="z-50 fixed bottom-0 w-full">
+    {#if $queue.length}
+        <SongPreview/>
+    {/if}
     <Player />
 </div>

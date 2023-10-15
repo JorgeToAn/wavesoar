@@ -18,6 +18,7 @@
             <form action="/logout" method="POST">
                 <button class="w-full px-4 py-1 rounded transition ease-in text-left hover:bg-slate-300 hover:text-black" type="submit"><i class="bi bi-box-arrow-right"></i> Log out</button>
             </form>
+            <a href="upload" class="w-full block px-4 py-1 rounded transition ease-in text-left hover:bg-slate-300 hover:text-black"><i class="bi bi-upload"></i> Upload</a>
         </div>
     {/if}
 </div>

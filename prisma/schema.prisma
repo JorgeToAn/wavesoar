@@ -53,7 +53,7 @@ model Follows {
 model Genre {
   id    Int    @id @default(autoincrement())
   name  String
-  songs Song[]
+  collections Collection[]
 }
 
 model Song {
@@ -63,8 +63,6 @@ model Song {
   duration      Int
   number        Int
   file_url      String
-  genre_id      Int
-  genre         Genre?     @relation(fields: [genre_id], references: [id])
   creator_id    String
   creator       User       @relation(fields: [creator_id], references: [id])
   collection_id Int
@@ -77,6 +75,8 @@ model Collection {
   picture_url String         @default("/images/default_collection.png")
   is_private  Boolean        @default(false)
   type        CollectionType @default(PLAYLIST)
+  genre_id    Int
+  genre       Genre?         @relation(fields: [genre_id], references: [id])
   creator_id  String
   creator     User           @relation(fields: [creator_id], references: [id])
   songs       Song[]

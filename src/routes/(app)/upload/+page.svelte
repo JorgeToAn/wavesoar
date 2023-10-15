@@ -3,6 +3,8 @@
     import InputImage from '$lib/components/inputs/InputImage.svelte';
     import SongUpload from '$lib/components/inputs/SongUpload.svelte';
 
+    export let data;
+
     let songAmount = 1;
 </script>
 
@@ -15,8 +17,16 @@
         <InputImage label="Album Cover" name="cover" id="cover-upload"/>
     </div>
     <div class="my-10">
-        <label for="song-amount">How many songs are in the album?</label>
-        <input id="song-amount" class="bg-transparent border-2 rounded px-2 py-1" type="number" min="1" bind:value={songAmount}>
+        <label for="genres" class="block px-2 select-none cursor-text">Genres</label>
+        <select id="genres" name="genres" multiple size="4" class="block w-full bg-transparent border-2 rounded px-2 py-1">
+            {#each data.genres as genre}
+                <option value={genre.id}>{genre.name}</option>
+            {/each}
+        </select>
+    </div>
+    <div class="my-10">
+        <label for="song-amount" class="block px-2 select-none cursor-text">How many songs are in the album?</label>
+        <input id="song-amount" name="song-amount" class="block w-full bg-transparent border-2 rounded px-2 py-1" type="number" min="1" bind:value={songAmount}>
     </div>
     {#each {length: songAmount} as _, i}
         <div class="my-10">

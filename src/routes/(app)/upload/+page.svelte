@@ -9,7 +9,7 @@
 </script>
 
 <h1 class="mx-4 mb-4 font-title text-6xl font-bold">Upload Album</h1>
-<form method="POST" class="mx-20">
+<form method="POST" enctype="multipart/form-data" class="mx-20">
     <div class="my-10">
         <InputText css="w-full" label="Name" name="name" placeholder="Enter the name of your album" required/>
     </div>
@@ -17,10 +17,10 @@
         <InputImage label="Album Cover" name="cover" id="cover-upload"/>
     </div>
     <div class="my-10">
-        <label for="genres" class="block px-2 select-none cursor-text">Genres</label>
-        <select id="genres" name="genres" multiple size="4" class="block w-full bg-transparent border-2 rounded px-2 py-1">
+        <label for="genre" class="block px-2 select-none cursor-text">Genre</label>
+        <select id="genre" name="genre" class="block w-full bg-transparent border-2 rounded px-2 py-1">
             {#each data.genres as genre}
-                <option value={genre.id}>{genre.name}</option>
+                <option class="bg-dark" value={genre.id}>{genre.name}</option>
             {/each}
         </select>
     </div>
@@ -29,7 +29,8 @@
         <input id="song-amount" name="song-amount" class="block w-full bg-transparent border-2 rounded px-2 py-1" type="number" min="1" bind:value={songAmount}>
     </div>
     {#each {length: songAmount} as _, i}
-        <div class="my-10">
+        <div class="my-10 flex items-center">
+            <span class="text-lg font-bold">#{i+1}</span>
             <SongUpload number={i+1} />
         </div>
     {/each}

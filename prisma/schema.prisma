@@ -15,12 +15,6 @@ enum Role {
   ADMIN
 }
 
-enum CollectionType {
-  ALBUM
-  SINGLE
-  PLAYLIST
-}
-
 model User {
   id           String       @id @unique @default(uuid())
   email        String       @unique
@@ -31,53 +25,63 @@ model User {
   last_name    String?
   bio          String?
   birthdate    DateTime
-  picture_path String       @default("/images/default_user.png")
+  picture_url  String       @default("/images/default_user.png")
   created_at   DateTime     @default(now())
   role         Role         @default(USER)
   songs        Song[]
-  collections  Collection[]
+  albums       Album[]
+  playlists    Playlist[]
   followers    Follows[]    @relation("following")
   following    Follows[]    @relation("follower")
 }
 
 model Follows {
   follower_id    String
-  follower_user  User     @relation("follower", fields: [follower_id], references: [id])
+  follower_user  User       @relation("follower", fields: [follower_id], references: [id])
   following_id   String
-  following_user User     @relation("following", fields: [following_id], references: [id])
-  followed_at    DateTime @default(now())
+  following_user User       @relation("following", fields: [following_id], references: [id])
+  followed_at    DateTime   @default(now())
 
   @@id([following_id, follower_id])
 }
 
 model Genre {
-  id    Int    @id @default(autoincrement())
-  name  String
-  collections Collection[]
+  id            Int         @id @default(autoincrement())
+  name          String
+  albums        Album[]
 }
 
 model Song {
-  id            Int        @id @default(autoincrement())
+  id            Int         @id @default(autoincrement())
   name          String
   /// Duration in seconds
   duration      Int
   number        Int
   file_url      String
-  creator_id    String
-  creator       User       @relation(fields: [creator_id], references: [id])
-  collection_id Int
-  collection    Collection @relation(fields: [collection_id], references: [id])
+  artist_id     String
+  artist        User        @relation(fields: [artist_id], references: [id])
+  album_id      Int
+  album         Album       @relation(fields: [album_id], references: [id])
+  playlists     Playlist[]
 }
 
-model Collection {
-  id          Int            @id @default(autoincrement())
+model Album {
+  id          Int           @id @default(autoincrement())
   name        String
-  picture_url String         @default("/images/default_collection.png")
-  is_private  Boolean        @default(false)
-  type        CollectionType @default(PLAYLIST)
-  genre_id    Int
-  genre       Genre?         @relation(fields: [genre_id], references: [id])
+  picture_url String        @default("/images/default_album.png")
+  genre_id    Int?
+  genre       Genre?        @relation(fields: [genre_id], references: [id])
+  artist_id   String
+  artist      User          @relation(fields: [artist_id], references: [id])
+  songs       Song[]
+}
+
+model Playlist {
+  id          Int           @id @default(autoincrement())
+  name        String
+  picture_url String        @default("/images/default_album.png")
+  is_private  Boolean       @default(false)
   creator_id  String
-  creator     User           @relation(fields: [creator_id], references: [id])
+  creator     User          @relation(fields: [creator_id], references: [id])
   songs       Song[]
 }

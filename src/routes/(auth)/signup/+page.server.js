@@ -35,13 +35,20 @@ export const actions = {
 
     const authenticatedUser = await db.user.create({
       data: {
-        email,
+        email: email.toLowerCase(),
         username,
         password: await bcrypt.hash(password, 10),
         auth_token: crypto.randomUUID(),
-        first_name,
-        last_name,
+        first_name: first_name.toUpperCase(),
+        last_name: last_name?.toUpperCase(),
         birthdate,
+        playlists: {
+          create: {
+            name: 'Liked',
+            picture_url: 'images/liked_playlist.png',
+            is_private: false,
+          },
+        },
       }
     });
 

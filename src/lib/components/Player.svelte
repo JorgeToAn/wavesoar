@@ -1,5 +1,7 @@
 <script>
-    import { queue, queueIndex } from '$lib/stores.js';
+    import { queue, queueIndex } from '$lib/stores';
+    import { invalidateAll } from '$app/navigation';
+    import { applyAction } from '$app/forms';
 
     let paused = true;
     let muted = false;
@@ -92,8 +94,22 @@
         }
     }
 
-    // TODO
-    // handleLike()
+    async function handleLike(event) {
+        const data = new FormData(this);
+
+        const response = await fetch(this.action, {
+            method: 'POST',
+            body: data
+        });
+
+        if (response.status === 201) {
+            // re-run all `load` functions, following the successful update
+            alert('liked song');
+            await invalidateAll();
+        }
+
+        applyAction(result);
+    }
 
     function handleSeek(event) {
         let seekvalue = audioPlayer.duration * (event.target.value / 100);
@@ -143,7 +159,10 @@
 </div>
 <div class="my-2 flex justify-evenly items-center translate-x-10">
     <div>
-        <button class="w-10 h-10 bg-transparent text-white text-3xl rounded-full transition ease-in hover:bg-light hover:text-dark active:scale-90"><i class="bi bi-heart"></i></button>
+        <form action="/api/like" method="POST" on:submit|preventDefault={handleLike}>
+            <input type="number" name="song-id" value={$queue[$queueIndex]?.id} hidden>
+            <button disabled={!$queue.length} class="w-10 h-10 bg-transparent text-white text-3xl rounded-full transition ease-in hover:bg-light hover:text-dark active:scale-90"><i class="bi bi-heart"></i></button>
+        </form>
     </div>
     <div class="flex justify-center items-center">
         <button on:click={prevSong} class="mx-2 bg-transparent text-white text-5xl rounded-full transition ease-in hover:bg-light hover:text-dark active:scale-90"><i class="bi bi-skip-start-fill"></i></button>

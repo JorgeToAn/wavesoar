@@ -3,10 +3,10 @@
 </script>
 
 <div class="fixed left-4 bottom-10 px-2 flex justify-start items-center w-60 bg-[#222222] rounded">
-    <img alt="Album Cover" class="w-16 h-16 rounded" src={$queue[$queueIndex]?.picture_path}>
+    <img alt="Album Cover" class="w-16 h-16 rounded" src={$queue[$queueIndex]?.album.picture_url}>
     <div class="w-full overflow-hidden">
         <p id="scroll-text" class="title p-2 whitespace-nowrap text-clip">{$queue[$queueIndex]?.name}</p>
-        <p class="author p-2 pt-0 whitespace-nowrap text-ellipsis text-primary-100">{$queue[$queueIndex]?.artist}</p>
+        <p class="author p-2 pt-0 whitespace-nowrap text-ellipsis text-primary-100">{$queue[$queueIndex]?.artist.username}</p>
     </div>
 </div>
 

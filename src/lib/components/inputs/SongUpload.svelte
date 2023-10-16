@@ -13,7 +13,7 @@
     }
 </script>
 
-<div class="flex justify-between" transition:fly={{ duration: 150, y: 100, opacity: 0.5, easing: quintOut }}>
+<div class="flex-1 flex justify-between" transition:fly={{ duration: 150, y: 100, opacity: 0.5, easing: quintOut }}>
     <InputText label="Song Name" name="songname-{number}" placeholder="Name of the song" required />
     <label class="transition ease-in-out duration-500 bg-primary-500 hover:bg-primary-700 px-6 py-2 rounded-lg font-bold text-center" for="songfile-{number}">
         {#if file}
@@ -23,5 +23,5 @@
             <i class="bi bi-file-earmark-music"></i> File
         {/if}
     </label>
-    <input bind:this={input} on:change={() => file = input.files[0]} id="songfile-{number}" class="hidden" type="file" accept=".mp3, .wav, .aac" required>
+    <input bind:this={input} on:change={() => file = input.files[0]} id="songfile-{number}" name="songfile-{number}" class="hidden" type="file" accept=".mp3, .wav, .aac" required>
 </div>

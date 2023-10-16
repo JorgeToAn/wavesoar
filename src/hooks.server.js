@@ -11,18 +11,21 @@ export async function handle({ event, resolve }) {
   const user = await db.user.findUnique({
     where: { auth_token: session },
     select: {
+      id: true,
+      email: true,
       username: true,
-      picture_path: true,
+      first_name: true,
+      last_name: true,
+      bio: true,
+      birthdate: true,
+      picture_url: true,
+      created_at: true,
       role: true,
     }
   });
 
   if (user) {
-    event.locals.user = {
-      username: user.username,
-      picture_path: user.picture_path,
-      role: user.role,
-    };
+    event.locals.user = user
   }
 
   const response = await resolve(event);

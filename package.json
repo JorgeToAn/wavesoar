@@ -1,6 +1,9 @@
 {
 	"name": "wavesoar",
 	"version": "0.0.1",
+	"prisma": {
+		"seed": "node prisma/seed.js"
+	},
 	"private": true,
 	"scripts": {
 		"dev": "vite dev",
@@ -28,6 +31,7 @@
 	"dependencies": {
 		"@prisma/client": "^5.3.1",
 		"bcrypt": "^5.1.1",
-		"dayjs": "^1.11.10"
+		"dayjs": "^1.11.10",
+		"get-audio-duration": "^4.0.1"
 	}
 }

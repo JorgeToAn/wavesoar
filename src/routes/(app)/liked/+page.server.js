@@ -9,7 +9,12 @@ export async function load({ locals }) {
     include: {
       songs: {
         include: {
-          artist: true,
+          artist: {
+            select: {
+              id: true,
+              username: true,
+            }
+          },
           album: true,
         },
       },

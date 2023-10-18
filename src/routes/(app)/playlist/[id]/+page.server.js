@@ -9,13 +9,19 @@ export async function load({ params }) {
     },
     include: {
       creator: {
-        select: { username: true },
+        select: {
+          id: true,
+          username: true
+        },
       },
       songs: {
         include: {
           album: true,
           artist: {
-            select: { username: true },
+            select: {
+              id: true,
+              username: true
+            },
           },
         },
       },

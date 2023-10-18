@@ -5,6 +5,7 @@ export async function load() {
     include: {
       artist: {
         select: {
+          id: true,
           username: true,
         },
       },
@@ -22,6 +23,7 @@ export async function load() {
     include: {
       creator: {
         select: {
+          id: true,
           username: true,
         },
       },

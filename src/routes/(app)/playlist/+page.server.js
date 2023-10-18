@@ -9,19 +9,21 @@ export const actions = {
     const image = data.get('image');
     const song = parseInt(data.get('song'));
 
-    await writeFile(`static/${locals.user.id}/${image.name}`, image.stream())
-      .catch((err) => {
-        console.log(err);
-        return fail(500, {
-          success: false,
-          message: 'Couldn\'t upload playlist image',
+    if (image) {
+      await writeFile(`static/${locals.user.id}/${image.name}`, image.stream())
+        .catch((err) => {
+          console.log(err);
+          return fail(500, {
+            success: false,
+            message: 'Couldn\'t upload playlist image',
+          });
         });
-      });
+    }
 
     const playlist = await db.playlist.create({
       data: {
         name: name,
-        picture_url: `/${locals.user.id}/${image.name}`,
+        picture_url: image ? `/${locals.user.id}/${image.name}` : undefined,
         is_private: false,
         creator_id: locals.user.id,
         songs: {

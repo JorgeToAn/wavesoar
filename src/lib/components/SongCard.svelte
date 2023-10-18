@@ -34,10 +34,10 @@
     </button>
     <div class="px-4 w-5/12">
         <p class="font-title font-semibold text-2xl">{song.name}</p>
-        <p>{artist.username}</p>
+        <p class="hover:underline underline-offset-4"><a href="/user/{artist.id}">{artist.username}</a></p>
     </div>
     <div class="w-6/12">
-        <p>{album.name}</p>
+        <p><a href="/album/{album.id}" class="hover:underline underline-offset-4">{album.name}</a></p>
     </div>
     <button on:click={addToQueue} class="group relative bg-transparent hover:bg-primary-700 p-4 rounded">
         <i class="bi bi-music-note-list"></i>

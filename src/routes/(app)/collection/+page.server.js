@@ -7,7 +7,10 @@ export async function load({ locals }) {
     },
     include: {
       artist: {
-        select: { username: true },
+        select: {
+          id: true,
+          username: true
+        },
       },
     },
   });
@@ -19,7 +22,10 @@ export async function load({ locals }) {
     },
     include: {
       creator: {
-        select: { username: true },
+        select: {
+          id: true,
+          username: true
+        },
       },
     },
   });

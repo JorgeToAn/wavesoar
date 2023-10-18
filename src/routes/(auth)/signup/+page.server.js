@@ -1,4 +1,5 @@
 import { fail, redirect } from '@sveltejs/kit';
+import { mkdirSync } from 'fs';
 import bcrypt from 'bcrypt';
 import dayjs from 'dayjs';
 import { db } from '$lib/database';
@@ -45,12 +46,14 @@ export const actions = {
         playlists: {
           create: {
             name: 'Liked',
-            picture_url: 'images/liked_playlist.png',
+            picture_url: '/images/liked_playlist.png',
             is_private: false,
           },
         },
       }
     });
+
+    mkdirSync(`static/${authenticatedUser.id}/`);
 
     cookies.set('session', authenticatedUser.auth_token, {
       path: '/',

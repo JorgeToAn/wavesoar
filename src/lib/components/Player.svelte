@@ -10,6 +10,7 @@
     let currentTime;
     let durationDisplay = '00:00';
     let duration;
+    let disabled = false;
 
     let audioPlayer;
     let playBtn;
@@ -150,30 +151,34 @@
             durationDisplay = '00:00';
         }
     }
+
+    $: {
+        disabled = !$queue.length;
+    }
 </script>
 
 <div class="slider flex justify-center items-center">
     <span class="bg-white text-dark px-2 rounded-full select-none">{currentTimeDisplay}</span>
-    <input bind:this={seekSlider} on:change={handleSeek} type="range" value="0" class="w-7/12 h-2 mx-4 text-sm bg-primary-900 rounded-full appearance-none cursor-pointer transition ease-in hover:bg-primary-600">
+    <input {disabled} bind:this={seekSlider} on:change={handleSeek} type="range" value="0" class="w-7/12 h-2 mx-4 text-sm bg-primary-900 rounded-full appearance-none cursor-pointer transition ease-in hover:bg-primary-600">
     <span class="bg-white text-dark px-2 rounded-full select-none">{durationDisplay}</span>
 </div>
 <div class="my-2 flex justify-evenly items-center translate-x-10">
     <div>
         <form action="/api/like" method="POST" on:submit|preventDefault={handleLike}>
             <input type="number" name="song-id" value={$queue[$queueIndex]?.id} hidden>
-            <button disabled={!$queue.length} class="w-10 h-10 bg-transparent text-white text-3xl rounded-full transition ease-in hover:bg-light hover:text-dark active:scale-90"><i class="bi bi-heart"></i></button>
+            <button {disabled} class="w-10 h-10 bg-transparent text-white text-3xl rounded-full transition ease-in hover:bg-light hover:text-dark active:scale-90"><i class="bi bi-heart"></i></button>
         </form>
     </div>
     <div class="flex justify-center items-center">
-        <button on:click={prevSong} class="mx-2 bg-transparent text-white text-5xl rounded-full transition ease-in hover:bg-light hover:text-dark active:scale-90"><i class="bi bi-skip-start-fill"></i></button>
-        <button bind:this={playBtn} on:click={togglePlay} class="mx-2 bg-transparent text-white text-8xl rounded-full transition ease-in hover:bg-light hover:text-dark active:scale-90">
+        <button {disabled} on:click={prevSong} class="mx-2 bg-transparent text-white text-5xl rounded-full transition ease-in hover:bg-light hover:text-dark active:scale-90"><i class="bi bi-skip-start-fill"></i></button>
+        <button {disabled} bind:this={playBtn} on:click={togglePlay} class="mx-2 bg-transparent text-white text-8xl rounded-full transition ease-in hover:bg-light hover:text-dark active:scale-90">
             {#if paused}
                 <i class="bi bi-play-fill"></i>
             {:else}
                 <i class="bi bi-pause-fill"></i>
             {/if}
         </button>
-        <button on:click={nextSong} class="mx-2 bg-transparent text-white text-5xl rounded-full transition ease-in hover:bg-light hover:text-dark active:scale-90"><i class="bi bi-skip-end-fill"></i></button>
+        <button {disabled} on:click={nextSong} class="mx-2 bg-transparent text-white text-5xl rounded-full transition ease-in hover:bg-light hover:text-dark active:scale-90"><i class="bi bi-skip-end-fill"></i></button>
     </div>
     <div class="pr-2 group flex items-center bg-transparent hover:bg-white rounded-full -translate-x-10">
         <button bind:this={volumeBtn} on:click={toggleSound} class="w-10 h-10 bg-transparent text-white text-3xl rounded-full transition ease-in hover:bg-light hover:text-dark group-hover:text-dark active:scale-90 translate-x-20 group-hover:translate-x-0"><i class="bi bi-volume-up-fill"></i></button>

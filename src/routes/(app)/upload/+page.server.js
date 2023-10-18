@@ -62,15 +62,18 @@ export const actions = {
       songs.push(song);
     }
 
-    const pictureURL = albumdir + albumCover.name;
-    await writeFile('static' + pictureURL, albumCover.stream())
-      .catch((err) => {
-        console.log(err);
-        return fail(500, {
-          cover: true,
-          message: 'Couldn\'t upload album cover',
+    let pictureURL = undefined;
+    if (albumCover) {
+      pictureURL = albumdir + albumCover.name;
+      await writeFile('static' + pictureURL, albumCover.stream())
+        .catch((err) => {
+          console.log(err);
+          return fail(500, {
+            cover: true,
+            message: 'Couldn\'t upload album cover',
+          });
         });
-      });
+    }
 
     await db.album.create({
       data: {

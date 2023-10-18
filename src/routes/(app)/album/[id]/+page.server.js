@@ -25,6 +25,7 @@ export async function load({ params }) {
       album: true,
       artist: {
         select: {
+          id: true,
           username: true,
         },
       },

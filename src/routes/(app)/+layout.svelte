@@ -5,6 +5,7 @@
     import NavLink from '$lib/components/NavLink.svelte';
     import Player from '$lib/components/Player.svelte';
 	import SongPreview from '$lib/components/SongPreview.svelte';
+    import AddToPlayListModal from '$lib/components/AddToPlayListModal.svelte';
 
     export let data;
     let navlinks = [
@@ -37,3 +38,4 @@
     {/if}
     <Player />
 </div>
+<AddToPlayListModal />

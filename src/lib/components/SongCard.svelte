@@ -1,5 +1,5 @@
 <script>
-    import { queue } from '$lib/stores.js';
+    import { queue, addSongId } from '$lib/stores.js';
 
     export let song;
     export let artist;
@@ -15,6 +15,11 @@
 
     function addToQueue() {
         $queue = [...$queue, song];
+    }
+
+    function addToPlaylist() {
+        $addSongId = song.id;
+        document.getElementById('playlist-modal').classList.remove('hidden');
     }
 </script>
 
@@ -34,7 +39,12 @@
     <div class="w-6/12">
         <p>{album.name}</p>
     </div>
-    <button on:click={addToQueue} class="bg-transparent hover:bg-primary-700 p-4 rounded">
+    <button on:click={addToQueue} class="group relative bg-transparent hover:bg-primary-700 p-4 rounded">
         <i class="bi bi-music-note-list"></i>
+        <span class="z-50 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition ease-in duration-200 delay-1000 w-32 absolute right-full mr-2 text-center bg-[#222222] rounded">Add to queue</span>
+    </button>
+    <button on:click={addToPlaylist} class="group relative bg-transparent hover:bg-primary-700 p-4 rounded">
+        <i class="bi bi-collection-play"></i>
+        <span class="z-50 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition ease-in duration-200 delay-1000 w-32 absolute right-full mr-2 text-center bg-[#222222] rounded">Add to playlist</span>
     </button>
 </div>

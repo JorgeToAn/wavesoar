@@ -23,5 +23,5 @@
             <i class="bi bi-file-earmark-music"></i> File
         {/if}
     </label>
-    <input bind:this={input} on:change={() => file = input.files[0]} id="songfile-{number}" name="songfile-{number}" class="hidden" type="file" accept=".mp3, .wav, .aac" required>
+    <input bind:this={input} on:change={() => file = input.files[0]} id="songfile-{number}" name="songfile-{number}" class="hidden" type="file" accept=".mp3, .wav, .aac, .oga" required>
 </div>

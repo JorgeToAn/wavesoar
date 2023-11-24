@@ -68,7 +68,7 @@
                         <input class="hidden" name="playlist" type="number" value={playlist.id}>
                         <input class="hidden" name="song" type="number" value={$addSongId}>
                         <button disabled={loading} class="group relative bg-transparent hover:bg-primary-700 p-4 rounded">
-                            <span class="z-50 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition ease-in duration-200 delay-1000 w-32 absolute right-full mr-2 text-center bg-[#222222] rounded">Add</span>
+                            <span>Add</span>
                         </button>
                     </form>
                 </div>

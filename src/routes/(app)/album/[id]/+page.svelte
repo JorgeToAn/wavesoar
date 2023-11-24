@@ -8,7 +8,7 @@
     <img src={data.album.picture_url} alt="Album Cover" class="w-40 h-40 rounded">
     <div id="album-text" class="mx-4">
         <h1 class="mb-6 font-title text-6xl font-bold">{data.album.name}</h1>
-        <p>{data.album.artist.username}</p>
+        <p class="hover:underline underline-offset-4"><a href="/user/{data.album.artist.id}">{data.album.artist.username}</a></p>
         <p>{data.album.genre.name}</p>
     </div>
 </div>

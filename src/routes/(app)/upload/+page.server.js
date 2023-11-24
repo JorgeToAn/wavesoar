@@ -1,7 +1,7 @@
 import { existsSync, mkdirSync } from 'fs';
 import { writeFile } from 'fs/promises';
 import { getAudioDurationInSeconds } from 'get-audio-duration';
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import { db } from '$lib/database';
 
 export async function load() {
@@ -23,8 +23,8 @@ export const actions = {
 
     const albumdir = `/${user.id}/${albumName}/`;
     const songdir = albumdir + 'songs/';
-    if (!existsSync(songdir)) {
-      mkdirSync(songdir, { recursive: true });
+    if (!existsSync('static' + songdir)) {
+      mkdirSync('static' + songdir, { recursive: true });
     }
 
     const songs = [];
@@ -49,7 +49,7 @@ export const actions = {
           });
         });
 
-      const duration = await getAudioDurationInSeconds(fileURL);
+      const duration = await getAudioDurationInSeconds('static' + fileURL);
 
       const song = {
         name: songName,
@@ -75,7 +75,7 @@ export const actions = {
         });
     }
 
-    await db.album.create({
+    const album = await db.album.create({
       data: {
         name: albumName,
         picture_url: pictureURL,
@@ -94,5 +94,7 @@ export const actions = {
         message: 'Couldn\'t create album',
       })
     });
+
+    throw redirect(303, `/album/${album.id}`);
   }
 }

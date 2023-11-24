@@ -8,6 +8,7 @@ export async function load({ params }) {
     include: {
       artist: {
         select: {
+          id: true,
           username: true,
         },
       },

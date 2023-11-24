@@ -9,7 +9,7 @@ export async function load({ params, locals }) {
     throw redirect(300, '/user');
   }
 
-  const user = await db.user.findUnique({
+  const profile = await db.user.findUnique({
     where: { id: id },
     select: {
       username: true,
@@ -52,7 +52,7 @@ export async function load({ params, locals }) {
   });
 
   return {
-    user,
+    profile,
     albums,
     playlists,
   }
